@@ -1320,6 +1320,11 @@ name = "dump-brick"
 version = "0.1.0"
 dependencies = [
  "dioxus",
+ "dioxus-logger",
+ "dioxus-web",
+ "gloo-utils",
+ "tracing",
+ "web-sys",
 ]
 
 [[package]]

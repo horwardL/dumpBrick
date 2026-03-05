@@ -8,9 +8,23 @@ edition = "2021"
 
 [dependencies]
 dioxus = { version = "0.7.1", features = [] }
+dioxus-logger = "0.7.3"
+dioxus-web = "0.7.3"
+gloo-utils = "0.2.0"
+tracing = "0.1.44"
+web-sys = { version = "0.3.91", features = ["Document", "Element", "HtmlElement"] }
 
 [features]
 default = ["web"]
 web = ["dioxus/web"]
 desktop = ["dioxus/desktop"]
 mobile = ["dioxus/mobile"]
+
+# Optimize for WebAssembly size and strip debug info to prevent wasm-opt crashes
+[profile.release]
+lto = true
+opt-level = 'z'
+codegen-units = 1
+panic = 'abort'
+strip = true
+debug = false
