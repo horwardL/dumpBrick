@@ -5,7 +5,6 @@ use crate::MainBoardStruct;
 #[component]
 pub fn MainBoard() -> Element {
     let mut board = use_context::<MainBoardStruct>().board;
-    let mut handled_mousedown = use_signal(|| false);
 
     let mut on_click = move |i: usize, j: usize| {
         let mut b = board.write();
@@ -33,29 +32,14 @@ pub fn MainBoard() -> Element {
                                     class: "w-6 h-6 min-[380px]:w-8 min-[380px]:h-8 sm:w-10 sm:h-10 border rounded flex items-center justify-center transition-all duration-200 cursor-pointer select-none {bg_class}",
                                     pointer_events: "auto",
                                     style: "touch-action: none;",
-                                    onclick: move |_| {
-                                        if handled_mousedown() {
-                                            handled_mousedown.set(false);
-                                        } else {
-                                            on_click(i, j);
-                                        }
-                                    },
-                                    onmousedown: move |_| {
-                                        handled_mousedown.set(true);
+                                    onpointerdown: move |_| {
                                         on_click(i, j);
-                                    },
-                                    onmouseout: move |_| {
-                                        handled_mousedown.set(false);
                                     },
                                     onmouseenter: move |e| {
                                         if e.held_buttons().contains(dioxus::html::input_data::MouseButton::Primary) {
                                             let mut b = board.write();
                                             b[i][j] = 1;
                                         }
-                                    },
-                                    ontouchstart: move |_| {
-                                        handled_mousedown.set(true);
-                                        on_click(i, j);
                                     },
                                     ontouchmove: move |e| {
                                         if let Some(touch) = e.touches().first() {
